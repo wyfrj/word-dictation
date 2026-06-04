@@ -18,7 +18,8 @@ jobs:
           args: |
             sh -c "
               cd android &&
-              expect -c 'spawn buildozer android debug; expect \"Are you sure you want to continue\"; send \"y\\r\"; interact'
+              sed -i 's/def check_root(self):/def check_root(self): return  # /' /home/user/.venv/lib/python3.14/site-packages/buildozer/__init__.py &&
+              buildozer android debug
             "
 
       - name: Upload APK artifact
