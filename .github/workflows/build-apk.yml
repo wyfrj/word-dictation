@@ -15,25 +15,25 @@ jobs:
       - name: Build APK with Buildozer
         uses: docker://kivy/buildozer:latest
         with:
-          args: >
+          args: |
             sh -c "
               cd android &&
               python3 -c '
 import sys, os
-path = \"/home/user/.venv/lib/python3.14/site-packages/buildozer/__init__.py\"
-with open(path, \"r\") as f:
+path = "/home/user/.venv/lib/python3.14/site-packages/buildozer/__init__.py"
+with open(path, "r") as f:
     lines = f.readlines()
 in_check_root = False
 for i, line in enumerate(lines):
-    if \"def check_root(self):\" in line:
+    if "def check_root(self):" in line:
         in_check_root = True
-    elif in_check_root and \"cont = input(\" in line:
-        lines[i] = \"        cont = \\'y\\'  # Modified by CI\\n\"
+    elif in_check_root and "cont = input(" in line:
+        lines[i] = "        cont = \"y\"  # Modified by CI\n"
         in_check_root = False
         break
-with open(path, \"w\") as f:
+with open(path, "w") as f:
     f.writelines(lines)
-print(\"Modified check_root function\")
+print("Modified check_root function")
 ' &&
               buildozer android debug
             "
