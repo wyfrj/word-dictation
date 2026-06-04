@@ -20,7 +20,7 @@ jobs:
           args: |
             sh -c "
               cd android &&
-              buildozer android debug
+              buildozer --allow-root android debug
             "
 
       - name: Upload APK artifact
