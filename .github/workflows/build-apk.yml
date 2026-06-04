@@ -14,13 +14,11 @@ jobs:
 
       - name: Build APK with Buildozer
         uses: docker://kivy/buildozer:latest
-        env:
-          BUILDOZER_ALLOW_ROOT: 1
         with:
           args: |
             sh -c "
               cd android &&
-              buildozer --allow-root android debug
+              echo 'y' | buildozer android debug
             "
 
       - name: Upload APK artifact
