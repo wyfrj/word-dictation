@@ -29,3 +29,4 @@ android.allow_backup = 1
 [buildozer]
 log_level = 2
 warn_on_root = 1
+allow_root = 1
