@@ -18,7 +18,17 @@ jobs:
           args: |
             sh -c "
               cd android &&
-              sed -i \"s/cont = input('Are you sure you want to continue \[y\/n\]\? ')/cont = 'y'/\" /home/user/.venv/lib/python3.14/site-packages/buildozer/__init__.py &&
+              python3 -c \"
+import re
+path = '/home/user/.venv/lib/python3.14/site-packages/buildozer/__init__.py'
+with open(path, 'r') as f:
+    content = f.read()
+# 修改 input() 调用
+content = re.sub(r\\\"cont = input\\\\('Are you sure you want to continue \\\\[y/n\\\\]\\\\? '\\)\\\", \\\"cont = 'y'\\\", content)
+with open(path, 'w') as f:
+    f.write(content)
+print('Modified check_root function')
+\" &&
               buildozer android debug
             "
 
