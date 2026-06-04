@@ -26,7 +26,9 @@ android.archs = arm64-v8a, armeabi-v7a
 # 允许备份
 android.allow_backup = 1
 
+# 允许以 root 身份运行(用于 CI 环境)
+allow_root = 1
+
 [buildozer]
 log_level = 2
 warn_on_root = 1
-allow_root = 1
