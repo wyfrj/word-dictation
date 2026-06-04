@@ -19,14 +19,24 @@ jobs:
             sh -c "
               cd android &&
               python3 -c \"
-import re
+import sys, os
+# 修改 check_root 函数
 path = '/home/user/.venv/lib/python3.14/site-packages/buildozer/__init__.py'
 with open(path, 'r') as f:
-    content = f.read()
-# 修改 input() 调用
-content = re.sub(r\\\"cont = input\\\\('Are you sure you want to continue \\\\[y/n\\\\]\\\\? '\\)\\\", \\\"cont = 'y'\\\", content)
+    lines = f.readlines()
+
+# 找到 check_root 函数并注释掉 input() 调用
+in_check_root = False
+for i, line in enumerate(lines):
+    if 'def check_root(self):' in line:
+        in_check_root = True
+    elif in_check_root and 'cont = input(' in line:
+        lines[i] = '        cont = \\'y\\'  # Modified by CI\\n'
+        in_check_root = False
+        break
+
 with open(path, 'w') as f:
-    f.write(content)
+    f.writelines(lines)
 print('Modified check_root function')
 \" &&
               buildozer android debug
