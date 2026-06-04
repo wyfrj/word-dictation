@@ -18,7 +18,7 @@ jobs:
           args: |
             sh -c "
               cd android &&
-              script -q -c 'buildozer android debug' /dev/null
+              expect -c 'spawn buildozer android debug; expect \"Are you sure you want to continue\"; send \"y\\r\"; interact'
             "
 
       - name: Upload APK artifact
