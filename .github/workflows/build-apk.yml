@@ -1,0 +1,28 @@
+name: Build Android APK
+
+# 手动触发, 或推送到 main/master 时自动构建
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build APK with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          # 在 android/ 子目录构建 (buildozer.spec 所在处)
+          workdir: android
+          command: buildozer android debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: word-dictation-apk
+          path: android/bin/*.apk
+          if-no-files-found: error
